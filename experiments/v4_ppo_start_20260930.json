@@ -1,0 +1,352 @@
+{
+  "manifest_version": 1,
+  "git": {
+    "commit": "84418cd1119b5a5e941ef5c90197207576dcf7f2",
+    "relevant_source_clean": true
+  },
+  "actor": {
+    "checkpoint": {
+      "path": "best_v4_actor.pt",
+      "size": 2496588,
+      "sha256": "97166713648B5F409C546A88FA1A370014E6ACECA14934CE8F6EC377CF83C875"
+    },
+    "checkpoint_versions": {
+      "checkpoint_version": 1,
+      "actor_architecture_version": 1,
+      "tensor_version": 1,
+      "decision_feature_version": 3,
+      "action_encoding_version": 2
+    },
+    "config": {
+      "tile_embedding_dim": 16,
+      "player_embedding_dim": 8,
+      "action_type_embedding_dim": 16,
+      "draw_embedding_dim": 8,
+      "phase_embedding_dim": 8,
+      "ready_embedding_dim": 8,
+      "meld_type_embedding_dim": 8,
+      "discard_hidden_dim": 48,
+      "player_discard_hidden_dim": 32,
+      "meld_event_hidden_dim": 32,
+      "hand_tile_hidden_dim": 64,
+      "hand_summary_hidden_dim": 64,
+      "hand_output_dim": 128,
+      "player_tile_hidden_dim": 32,
+      "player_summary_hidden_dim": 32,
+      "player_output_dim": 64,
+      "progress_hidden_dim": 64,
+      "state_hidden_dim": 256,
+      "action_scalar_hidden_dim": 64,
+      "action_hidden_dim": 128,
+      "family_hidden_dim": 128,
+      "dropout": 0.1
+    },
+    "training": {
+      "report": {
+        "path": "training_result.json",
+        "size": 103244,
+        "sha256": "F33340706E3F353EB08431D49878A477EB06879AE91A1100039505F238D76AF8"
+      },
+      "best_epoch": 20,
+      "device": "cuda",
+      "elapsed_seconds": 4807.0981103999075,
+      "training_config": {
+        "epochs": 20,
+        "batch_size": 128,
+        "teacher_fraction": 0.7,
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "min_learning_rate": 1e-06,
+        "lr_factor": 0.5,
+        "lr_patience": 2,
+        "patience": 5,
+        "balance_exponent": 0.5,
+        "gradient_clip": 5.0,
+        "max_teacher_balanced_drop": 0.01,
+        "big_hand_route_shares": [
+          0.4,
+          0.45,
+          0.15
+        ],
+        "big_hand_teacher_agreement_weight": 0.5,
+        "big_hand_teacher_disagreement_weight": 2.0,
+        "max_train_episodes": 5000,
+        "split_seed": 20260929,
+        "seed": 20260929,
+        "device": "cuda",
+        "num_workers": 0,
+        "cpu_threads": 0
+      },
+      "initial_checkpoint": "best_v4_actor.pt",
+      "teacher_dataset": "v4-teacher-ready-5000",
+      "big_hand_dataset": "v4-bighand-5000-official",
+      "big_hand_view": "actor_v1",
+      "batch_sizes": {
+        "teacher": 90,
+        "big_hand": 38
+      },
+      "training_episodes": {
+        "teacher": 3500,
+        "big_hand": 1500
+      },
+      "route_scales": {
+        "seven_pairs": 0.9759656931223808,
+        "all_triplets": 0.9564553558794396,
+        "flush": 1.2535273172360075
+      },
+      "teacher_floor": 0.99
+    }
+  },
+  "critic": {
+    "checkpoint": {
+      "path": "best_v4_critic.pt",
+      "size": 2711181,
+      "sha256": "142515A0D5BC34FBFD9070AF5389C1F560F17859BE01AF7E284B06B75D79388C"
+    },
+    "checkpoint_versions": {
+      "critic_architecture": "v4_structured_privileged_v1",
+      "critic_tensor_version": 1
+    },
+    "config": {
+      "public_config": {
+        "tile_embedding_dim": 16,
+        "player_embedding_dim": 8,
+        "action_type_embedding_dim": 16,
+        "draw_embedding_dim": 8,
+        "phase_embedding_dim": 8,
+        "ready_embedding_dim": 8,
+        "meld_type_embedding_dim": 8,
+        "discard_hidden_dim": 48,
+        "player_discard_hidden_dim": 32,
+        "meld_event_hidden_dim": 32,
+        "hand_tile_hidden_dim": 64,
+        "hand_summary_hidden_dim": 64,
+        "hand_output_dim": 128,
+        "player_tile_hidden_dim": 32,
+        "player_summary_hidden_dim": 32,
+        "player_output_dim": 64,
+        "progress_hidden_dim": 64,
+        "state_hidden_dim": 256,
+        "action_scalar_hidden_dim": 64,
+        "action_hidden_dim": 128,
+        "family_hidden_dim": 128,
+        "dropout": 0.1
+      },
+      "legal_mask_hidden_dim": 32,
+      "future_draw_hidden_dim": 32,
+      "player_hidden_dim": 128,
+      "wall_tile_hidden_dim": 16,
+      "wall_hidden_dim": 64,
+      "fusion_hidden_dim": 256
+    },
+    "training": {
+      "report": {
+        "path": "training_result.json",
+        "size": 8224,
+        "sha256": "D9A2B3FF8CF408CC0C1374E17C69BE1D913FFCA56102259D4752313D63E94C3D"
+      },
+      "best_epoch": 2,
+      "device": "cuda",
+      "elapsed_seconds": 354.9359312000015,
+      "training_config": {
+        "epochs": 8,
+        "warmup_epochs": 1,
+        "batch_size": 512,
+        "learning_rate": 0.0003,
+        "public_learning_rate": 0.0001,
+        "weight_decay": 0.0001,
+        "shanten_loss_weight": 0.25,
+        "gradient_clip": 1.0,
+        "patience": 3,
+        "seed": 20260930,
+        "num_workers": 2
+      },
+      "sample_count": 922289,
+      "parameter_count": 662800,
+      "target_means": {
+        "score": 0.0028038221105098097,
+        "shanten": -0.7621599742247805
+      },
+      "split": {
+        "train_episodes": 4000,
+        "validation_episodes": 500,
+        "test_episodes": 500,
+        "train_samples": 738694,
+        "validation_samples": 91330,
+        "test_samples": 92265
+      }
+    }
+  },
+  "ppo_recipe": {
+    "rollout": {
+      "rounds_per_iteration": 1000,
+      "first_seed": 931000001,
+      "seed_stride_per_iteration": 1000,
+      "temperature": 1.0,
+      "policy_seed": 20260930,
+      "workers": 12,
+      "torch_threads_per_worker": 1,
+      "samples_per_shard": 512
+    },
+    "training": {
+      "ppo_epochs": 2,
+      "batch_size": 256,
+      "actor_learning_rate": 3e-05,
+      "critic_learning_rate": 3e-05,
+      "final_learning_rate_fraction": 0.1,
+      "weight_decay": 0.0001,
+      "clip_range": 0.2,
+      "entropy_coefficient": 0.01,
+      "value_loss_coefficient": 1.0,
+      "shanten_weight": 0.25,
+      "shanten_value_loss_weight": 0.25,
+      "target_kl": 0.015,
+      "gradient_clip": 1.0,
+      "temperature": 1.0,
+      "seed": 20260930,
+      "num_workers": 0,
+      "old_log_probability_tolerance": 0.05
+    },
+    "gamma": 1.0,
+    "gae_lambda": 1.0
+  },
+  "evaluation_protocol": {
+    "protocol_version": 1,
+    "games_per_matchup": 1000,
+    "seed_start": 932000001,
+    "seed_end": 932000167,
+    "unique_walls": 167,
+    "candidate_seat_counts": [
+      500,
+      500,
+      500,
+      500
+    ],
+    "candidate_pair_counts": {
+      "0-1": 167,
+      "0-2": 167,
+      "0-3": 166,
+      "1-2": 166,
+      "1-3": 167,
+      "2-3": 167
+    },
+    "seat_pair_order": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "schedule_sha256": "3657A7103639DD3B3460F634E0D8E4EB45986A7F04F72B281D85EA72718FE970",
+    "action_encoding_version": 2,
+    "observation_version": 3,
+    "decision_feature_version": 3,
+    "matchups": [
+      "two_candidate_two_baseline_v4",
+      "two_candidate_two_teacher"
+    ],
+    "teacher_kan_probability": 0.0,
+    "teacher_ready_policy": "declare",
+    "inference": "deterministic_argmax",
+    "big_hand_definition": "winning settlement total_fan > 1",
+    "score_ci": "95% wall-cluster bootstrap with 10000 resamples"
+  },
+  "source_files": {
+    "libgy/src/python/bindings.cpp": {
+      "path": "bindings.cpp",
+      "size": 54871,
+      "sha256": "8E9BA88686BFB893D7115F9AEDA5375152D3422FAE6702F383322C47D51A9E01"
+    },
+    "libgy/src/rl/decision_feature_encoder.cpp": {
+      "path": "decision_feature_encoder.cpp",
+      "size": 11349,
+      "sha256": "C6656C9DC8360C5161316F69CB687EF96FF250A3EA71AF4BE05674FFD9084F6D"
+    },
+    "libgy/src/rl/decision_feature_encoder.h": {
+      "path": "decision_feature_encoder.h",
+      "size": 2853,
+      "sha256": "902523372E5DE2B9D2EB8BA8F76CA76CEDC6DE87F422DB7D74DC180229DBC4EC"
+    },
+    "libgy/src/rl/privileged_state_encoder.cpp": {
+      "path": "privileged_state_encoder.cpp",
+      "size": 4643,
+      "sha256": "BBF1AA66623FD9168DF386F15343A9A9B23A831C65C2D5F3EA65E3C96F2F08F7"
+    },
+    "libgy/src/rl/privileged_state_encoder.h": {
+      "path": "privileged_state_encoder.h",
+      "size": 1356,
+      "sha256": "D221DB5805BD3E33663C6368370693E005245C898B65293542691D232F6643C8"
+    },
+    "python/gymj/collect_v4_ppo_rollouts.py": {
+      "path": "collect_v4_ppo_rollouts.py",
+      "size": 12787,
+      "sha256": "CFD1A83319BA97167E8F321282EB02280A41DDC5F3BAC526EF3DD95A525429BA"
+    },
+    "python/gymj/ppo.py": {
+      "path": "ppo.py",
+      "size": 2394,
+      "sha256": "F9119CBF1A9A24FD75D8D1CC495C77DF20F49E9CBE9F44A83BBD55B95BDA9A4E"
+    },
+    "python/gymj/train_v4_ppo.py": {
+      "path": "train_v4_ppo.py",
+      "size": 22868,
+      "sha256": "FA007E266369E814A0693E614D22B8267C13128C13B212088FFD6903CC0C767B"
+    },
+    "python/gymj/v4_actor.py": {
+      "path": "v4_actor.py",
+      "size": 24159,
+      "sha256": "A1730AB4F5A6588C64EB7ACEE9F70D5BFE99D536D85486FB8172F7A77A58D24A"
+    },
+    "python/gymj/v4_agent.py": {
+      "path": "v4_agent.py",
+      "size": 7156,
+      "sha256": "3FD857DC7A574601A063E35EC61C1570501085A2AA732721FB7F40D5E2F0DFF6"
+    },
+    "python/gymj/v4_critic.py": {
+      "path": "v4_critic.py",
+      "size": 25898,
+      "sha256": "41795A32C033B684B0E1A7384D96096F8EDFD7782AB525224BE5280002F79C8F"
+    },
+    "python/gymj/v4_features.py": {
+      "path": "v4_features.py",
+      "size": 34830,
+      "sha256": "E5769FCBB16E305925D3BE219E428DD64725FAB28CD2F3DADE3DA3889270A7B1"
+    },
+    "python/gymj/v4_ppo_dataset.py": {
+      "path": "v4_ppo_dataset.py",
+      "size": 20525,
+      "sha256": "DCFB4A4440FA83DBF29F8D97B01F37E205290F58AD1DF366960305BF79F4E947"
+    },
+    "python/gymj/v4_ppo_rollout.py": {
+      "path": "v4_ppo_rollout.py",
+      "size": 6397,
+      "sha256": "D5F24BDC8DEB8AB5A1A4814A98FA4BBFD0DFBF8ADEDF2145135BADC62A4BCD6C"
+    }
+  },
+  "environment": {
+    "python": "3.13.0",
+    "pytorch": "2.8.0+cu128",
+    "cuda_runtime": "12.8",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 4070 SUPER"
+  }
+}

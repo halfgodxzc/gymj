@@ -1,0 +1,14 @@
+/build/
+/build-nmake/
+/build-win32/
+/build-python-x64/
+/.venv/
+/artifacts/
+
+*.obj
+*.lib
+*.exe
+*.pdb
+*.ilk
+*.pyd
+__pycache__/
