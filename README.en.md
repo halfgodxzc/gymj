@@ -6,8 +6,19 @@ GYMJ is a four-player Guiyang Mahjong rules engine with an R5 policy model and s
 
 ## Rules and training
 
-- [Rules and scoring (Chinese)](docs/guiyang_rules.md): when a player may win on a discard, how passing on a pung restricts the next call, how chicken tiles and kongs score, and how payments work when the wall runs out.
+- [Rules and scoring](docs/guiyang_rules.en.md) ([中文](docs/guiyang_rules.md)): when you can win on a discard, how chickens and kongs score, and who pays when the wall runs out.
 - [How R5 was trained (Chinese)](docs/r5_basic_training.md): rule-based demonstrations, examples of higher-scoring hands, critic pretraining, PPO self-play, and evaluation against fixed opponents.
+
+## Repository layout
+
+| Location | Contents |
+| --- | --- |
+| [libgy/src](libgy/src/) | Rules, round settlement, feature encoding, and Python bindings |
+| [python/gymj](python/gymj/) | Agents, data collection, actor and critic models, training, and evaluation |
+| [examples](examples/) | Start with `play_r5.py` to play one hand |
+| [docs](docs/) | Player rules and training guides |
+| [tests](tests/) · [benchmarks](benchmarks/) | Correctness tests and performance benchmarks |
+| [experiments](experiments/) | Historical training configurations and model records; weights and sample games are in [Releases](https://github.com/halfgodxzc/gymj/releases) |
 
 ## Build from source
 

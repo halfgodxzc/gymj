@@ -11,6 +11,17 @@ GYMJ 提供四人贵阳麻将规则引擎和策略模型。Arena 负责合法动
 - [玩法与计分](docs/guiyang_rules.md)：报听、点炮资格、过碰、冲锋鸡、豆分和荒庄查叫。
 - [R5 的训练过程](docs/r5_basic_training.md)：教师示范、大牌混合监督、价值预训练、自博弈 PPO 与评估。
 
+## 目录导航
+
+| 位置 | 内容 |
+| --- | --- |
+| [libgy/src](libgy/src/) | 麻将规则、牌局结算、特征编码和 Python 接口 |
+| [python/gymj](python/gymj/) | Agent、数据采集、Actor/Critic、训练和评估 |
+| [examples](examples/) | 从 `play_r5.py` 开始，用权重打一局 |
+| [docs](docs/) | [英文玩法规则](docs/guiyang_rules.en.md)、中文规则和训练说明 |
+| [tests](tests/) · [benchmarks](benchmarks/) | 正确性测试与性能测试 |
+| [experiments](experiments/) | 历史训练配置与模型版本记录；权重和样例在 [Releases](https://github.com/halfgodxzc/gymj/releases) |
+
 ## 从源码运行
 
 已验证的平台是 Windows x64、Visual Studio 2022、Python 3.13。需要 C++17 编译器、CMake 与 Ninja。以下命令在已激活 Python 虚拟环境的 VS 开发者 PowerShell 中，从仓库根目录执行：
