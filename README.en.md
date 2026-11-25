@@ -22,6 +22,8 @@ GYMJ is a four-player Guiyang Mahjong rules engine with an R5 policy model and s
 
 [Training retrospective: from the rule-based teacher to the public R5](docs/r5_training_retrospective.en.md)
 
+[Human matches and post-R5 experiments: scores, decisions and measured gains](docs/r5_match_results.md#english)
+
 ## Build from source
 
 The tested configuration is Windows x64 with Visual Studio 2022 and Python 3.13. You need a C++17 compiler, CMake, and Ninja. From the repository root, run the following in a Visual Studio Developer PowerShell with your Python virtual environment active:

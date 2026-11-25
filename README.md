@@ -24,6 +24,8 @@ GYMJ 提供四人贵阳麻将规则引擎和策略模型。Arena 负责合法动
 
 [训练回顾：从规则教师到公开的 R5](docs/r5_training_retrospective.md)
 
+[真人对局与后续实验：R5 输在哪里，哪些改动有收益](docs/r5_match_results.md)
+
 ## 从源码运行
 
 已验证的平台是 Windows x64、Visual Studio 2022、Python 3.13。需要 C++17 编译器、CMake 与 Ninja。以下命令在已激活 Python 虚拟环境的 VS 开发者 PowerShell 中，从仓库根目录执行：
