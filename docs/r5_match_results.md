@@ -51,6 +51,16 @@
 
 **结论：** 进张微调得到的**模型权重**赢过直接起点；有条件多碰的**规则干预**在随机采样对局中也有收益。两者不是同一个成果。真人记录定位到了鸡分、有叫和同向听碰牌的差距，但没有同口径的人机前后测证明后续改动已经缩小这个差距。
 
+## 四个实验实际改了什么？
+
+**杠适配器：补上原策略不探索的动作。** 杠与碰不同，杠完还要补一张未知牌。采集时用本家可见信息枚举可能的补牌，估计杠后向听改善、持平和恶化的概率，让脚本在合法机会尝试杠与不杠。再用这些样本训练神经网络适配器，让杠与原有动作在同一个局面竞争，而不是部署时达到阈值就强制杠。公开权重包含这个适配器；后续联合 PPO 候选的回归结果不能当作适配器本身的独立收益。
+
+**信息集 MCTS：不训练权重，在出牌前试走。** 对弃牌及碰/过局面，从本家可见牌出发，把未见牌分配给其他三家和牌墙，不读取真实暗手。用冻结 R5 给根动作初始概率，再用树搜索分配模拟次数，以本席终局净分评估分支。首版用 C++ 牌理规则续打，另做过四家都由 GPU 上的 R5 续打的版本；两者不是同一组实验。规则续打版两席搜索对两席网页 R5，50 副牌墙换座共 100 局，搜索侧 **+1.640 分/席，95% 区间 [−0.360, +3.765]**。1,789 次搜索改变了 414 次原选择，平均每次耗时 0.651 秒。它确实改变决策，但未确认稳定增益。未知牌按可见数量约束采样，没有根据对手先前的弃牌反推手牌；这些成绩也不能算给全 R5 续打版。搜索未写入公开权重。
+
+**鸡分归因：把结算的正负分记回相关动作。** 不是“冲一次就奖 5 分”。终局后，把能匹配的冲锋、首轮跟冲、碰走固定鸡及责任鸡的实际收付，按玩家和决策序号关联到当时的弃牌或碰牌；未能归因的部分保留在账本里，不硬分。再比较 Actor 的归因权重 0、0.5、1.0，Arena 实际结算和 Critic 的净分标签不变。它告诉模型“这笔收付与哪个动作相关”，但不能证明换一个动作会少赚同样多的钱。
+
+**碰杠续打：不是每碰一次就发奖励。** 只筛碰后存在不恶化向听弃牌的机会；杠因补牌未知而直接比较分支。从同一局面分别执行原动作和另一个合法选择，重复打到终局，比较本席平均净分。例如碰比过平均多 3 分，训练就鼓励在该局面把碰排在过之前；若少 3 分则反向，持平不更新。差值除以 30 并限制权重，用作独立的 Actor 排序损失，不把旧续打混入新 PPO 轨迹，也不改 Critic 标签。后期每个动作碰续打 16 次、杠 8 次。它与上表“碰概率至少 50%”不同：前者是学动作相对价值，后者是直接改采样规则。
+
 <a id="english"></a>
 
 ## English: Human matches and post-R5 experiments
@@ -67,6 +77,13 @@ Human net payments were +155 for winning hands, +523 for chickens, +40 for respo
 | Conditional pung intervention | When only pung/pass were legal and a post-pung discard preserved shanten while increasing improving copies, a 50% pung-probability floor gained +1.636 [+0.934, +2.340] versus unchanged play; always claiming gained +1.873 [+0.922, +2.822]. Paired 1,000-wall experiments, one intervention seat against three R5 seats at temperature 1; not a learned checkpoint. |
 | Chicken-action bonuses | After 4,000 mixed-policy hands, the 0.5 branch changed by −0.412 against frozen R5 and −1.160 [−2.040, −0.232] against Teacher relative to its previous scores. The 1.0 branch changed by −0.089 against frozen R5. No consistent gain. |
 | Paired call continuations and critic calibration | With 16 repeats for pungs and eight for kongs, followed by a 2,000-hand calibration/PPO run, own-seat decision MSE fell about 0.86%. The actor scored +0.094 [−0.607, +0.799] against its parent over 800 hands. Neither the critic nor the actor result established an improvement over the parent. |
+
+### What changed in each experiment?
+
+- **Kong adapter (in the released weights):** A collection heuristic enumerated possible replacement draws using only visible information. Trying both declaring and declining provided examples for a learned adapter; the deployed actor was not forced to kong at a fixed threshold.
+- **Information-set MCTS (search, not training):** R5 supplied root priors. Search sampled unseen tiles subject to public counts and scored simulations by the acting seat's terminal net points. With C++ heuristic continuations, two search seats against two R5 seats scored +1.640 per seat [−0.360, +3.765] over 100 games on 50 walls. Search changed 414 of 1,789 decisions and averaged 0.651 seconds per search. This did not establish a strength gain. An all-R5 GPU continuation variant was explored separately; these numbers do not describe it. Neither search variant is part of the released weights.
+- **Chicken attribution:** Actual signed settlement amounts for identifiable charges, opening follows, fixed-chicken pungs and responsibility transfers were linked back to the relevant player's discard or claim. The optional actor bonus tested weights 0, 0.5 and 1.0. This is accounting attribution, not a counterfactual estimate or a change to game scoring.
+- **Paired pung/kong training:** Replay compared two legal choices from the same position. Their mean terminal score difference determined which action to rank higher and the capped weight of that example; ties provided no gradient. Later runs used 16 continuations per action for pungs and eight for kongs. This auxiliary actor loss did not change critic targets or turn old replay into on-policy PPO data. It is distinct from imposing a pung-probability floor.
 
 No comparable human rematch has established that the later experiments closed the human score gap. Improvements across historical branches are not additive.
 
